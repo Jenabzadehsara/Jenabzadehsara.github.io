@@ -141,6 +141,22 @@
     font-size:clamp(28px,5vw,44px);letter-spacing:-.02em;line-height:1;
   }
   .channel-note{font-family:var(--mono);font-size:12px;color:var(--muted);margin-left:auto}
+  
+  /* User UX Hint styling */
+  .interaction-hint {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--tech);
+    border: 1.5px dashed var(--line);
+    padding: 10px 16px;
+    border-radius: 10px;
+    margin-bottom: 24px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--paper-2);
+  }
+  
   @media(max-width:680px){.channel-note{margin-left:0;width:100%}}
 
   /* ---------- work cards ---------- */
@@ -189,6 +205,7 @@
     display:grid;grid-template-columns:1fr auto;gap:18px;align-items:start;
     padding:24px 0;border-bottom:1px solid var(--line);
     transition: background-color 0.3s ease;
+    cursor: pointer;
   }
   .row:first-child{border-top:1px solid var(--line)}
   .row h3{font-family:var(--display);font-weight:600;font-size:21px;margin-bottom:6px}
@@ -199,7 +216,7 @@
     .row .meta{text-align:left}
   }
   
-  /* Text details hover animation */
+  /* Text details hover/click animation */
   .hover-details {
     max-height: 0;
     opacity: 0;
@@ -207,7 +224,7 @@
     margin: 0;
     transition: max-height 0.4s ease, opacity 0.4s ease, margin 0.4s ease;
   }
-  .row:hover .hover-details {
+  .row:hover .hover-details, .row.is-active .hover-details {
     max-height: 500px;
     opacity: 1;
     margin-top: 14px;
@@ -253,17 +270,17 @@
   /* ---------- contact ---------- */
   .contact{padding:72px 0 40px;border-top:1px solid var(--line)}
   .contact-layout {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr auto;
     align-items: center;
     gap: 40px;
-    flex-wrap: wrap;
   }
   .contact-text {
-    flex: 1 1 500px;
+    width: 100%;
   }
   .contact-photo {
-    flex: 0 0 auto;
+    display: flex;
+    justify-content: center;
   }
   .profile-pic {
     width: 220px;
@@ -284,6 +301,19 @@
   .contact h2{font-family:var(--display);font-weight:800;font-size:clamp(34px,7vw,64px);letter-spacing:-.03em;line-height:1}
   .contact p{max-width:52ch;margin-top:16px;color:var(--text-2)}
   .contact-links{display:flex;gap:14px;flex-wrap:wrap;margin-top:30px}
+
+  /* Mobile layout rules */
+  @media(max-width:768px) {
+    .contact-layout {
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+    .profile-pic {
+      width: 100%;
+      max-width: 280px;
+      height: 280px;
+    }
+  }
 
   /* ---------- footer ---------- */
   footer{border-top:1px solid var(--line);padding:26px 0 40px}
@@ -341,6 +371,11 @@
       <h2 class="channel-title">Selected work</h2>
       <span class="channel-note">models · real-time systems · hardware</span>
     </div>
+    
+    <div class="interaction-hint">
+      <span>💡</span> <span>Hover over or click sections to expand details and view media.</span>
+    </div>
+
     <div class="cards">
 
       <article class="card">
@@ -382,7 +417,7 @@
       <span class="channel-note">where most of this lives</span>
     </div>
     <div class="rows">
-      <div class="row">
+      <div class="row" onclick="this.classList.toggle('is-active')">
         <div>
           <h3><a href="https://www.moorelaboratory.org/team" target="_blank" rel="noopener noreferrer" style="text-decoration: underline; text-decoration-color: var(--muted); text-underline-offset: 4px;">Moore Lab</a>, Undergraduate Researcher</h3>
           <p>Working on central-pattern-generator dynamics and integrate-and-fire modeling under PI Jeffrey Moore, contributing analysis toward an in-progress publication on rhythmic neural circuits.</p>
@@ -396,14 +431,14 @@
         </div>
         <div class="meta">USC<br>2025 to present</div>
       </div>
-      <div class="row">
+      <div class="row" onclick="this.classList.toggle('is-active')">
         <div>
           <h3>Neurotech@USC</h3>
           <p>Helping build a visible student pipeline into neurotech: projects, talks, and a growing community for people who want to work where neuroscience meets engineering.</p>
         </div>
         <div class="meta">USC<br>student org</div>
       </div>
-      <div class="row">
+      <div class="row" onclick="this.classList.toggle('is-active')">
         <div>
           <h3>BS Computational Neuroscience + MS Electrical Engineering</h3>
           <p>Concurrent degrees through USC Viterbi's Progressive Degree Program, with a graduate focus on machine learning.</p>
