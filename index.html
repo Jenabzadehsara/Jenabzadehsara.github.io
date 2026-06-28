@@ -116,8 +116,8 @@
   .scope-tags .ch-r{color:var(--indigo)}
   .scope-tags .freq{color:var(--muted)}
 
-  .hero-lede{max-width:60ch;font-size:clamp(18px,2.4vw,22px);margin-top:6px}
-  .hero-quip{color:var(--muted);max-width:60ch;margin-top:14px}
+  .hero-lede{max-width:65ch;font-size:clamp(18px,2.4vw,22px);margin-top:6px}
+  .hero-quip{color:var(--muted);max-width:65ch;margin-top:14px}
   .cta-row{display:flex;gap:14px;flex-wrap:wrap;margin-top:30px}
   .btn{
     font-family:var(--mono);font-size:13px;letter-spacing:.04em;
@@ -289,15 +289,15 @@
 
   <div class="scope" aria-label="Decorative two-channel neural signal animation">
     <div class="scope-tags">
-      <span class="ch-l">CH&#8209;L · whisker</span>
-      <span class="freq" id="freq-readout">≈ 6.40 Hz</span>
-      <span class="ch-r">CH&#8209;R · whisker</span>
+      <span class="ch-l">CH&#8209;L · Frontal EEG (Delta-Theta)</span>
+      <span class="freq" id="freq-readout">Avg: ≈ 10.2 Hz</span>
+      <span class="ch-r">CH&#8209;R · Occipital EEG (Alpha-Beta)</span>
     </div>
     <canvas id="scope"></canvas>
   </div>
 
-  <p class="hero-lede">I build software and hardware that read neural signals: spiking-network models, real-time decoders, and the lab electronics in between.</p>
-  <p class="hero-quip">Currently teaching circuits to keep a beat: the brain kind, modeled in MATLAB, and the breadboard kind, oscillating at 6.4 Hz on an actual servo.</p>
+  <p class="hero-lede">I build software and hardware that read neural signals, from spiking-network models to real-time EEG decoders, and the lab electronics in between.</p>
+  <p class="hero-quip">Currently teaching circuits to map a rhythm: the brain kind, modeled via frequency-band analysis, and the breadboard kind, synchronizing custom front-ends for 10.2 Hz detection.</p>
 
   <div class="cta-row">
     <a href="#work" class="btn btn-primary">See the work <span class="arr">→</span></a>
@@ -499,16 +499,6 @@
   resize();
   window.addEventListener('resize',resize);
 
-  // a CPG-ish compound oscillation: a few sines + gentle noise
-  function sample(x,t,phase){
-    var f=6.4;                       // the headline frequency
-    var v =Math.sin((x*0.018)+(t*f*0.04)+phase)*0.55;
-    v+=Math.sin((x*0.041)+(t*f*0.07)+phase*1.7)*0.22;
-    v+=Math.sin((x*0.0072)-(t*0.9)+phase)*0.12;
-    v+=(Math.sin(x*0.6+t*7)*0.04);   // fine texture
-    return v;
-  }
-
   function grid(){
     ctx.strokeStyle=line;ctx.globalAlpha=0.55;ctx.lineWidth=1;
     for(var gx=0;gx<W;gx+=46){
@@ -518,24 +508,31 @@
     ctx.globalAlpha=1;
   }
 
-  function trace(t,phase,color,amp){
-    ctx.beginPath();
-    for(var x=0;x<=W;x+=2){
-      var y=H/2 + sample(x,t,phase)*amp;
-      if(x===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
-    }
-    ctx.strokeStyle=color;ctx.lineWidth=2;
-    ctx.lineJoin='round';ctx.lineCap='round';
-    ctx.shadowColor=color;ctx.shadowBlur=8;
-    ctx.stroke();
-    ctx.shadowBlur=0;
-  }
-
   function frame(t){
     ctx.clearRect(0,0,W,H);
     grid();
-    trace(t,0,coral,H*0.30);
-    trace(t,Math.PI*0.6,indigo,H*0.22);
+
+    // Left side (Frontal: Delta/Theta - slow, high amplitude)
+    ctx.beginPath();
+    for(var x=0; x<=W/2; x+=2){
+      var y = H/2 + (Math.sin(x*0.02 + t*4)*0.5 + Math.sin(x*0.05 + t*6)*0.3 + Math.sin(x*0.1 - t)*0.2) * (H*0.35);
+      if(x===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    }
+    ctx.strokeStyle = coral; ctx.lineWidth = 2;
+    ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+    ctx.shadowColor = coral; ctx.shadowBlur = 8;
+    ctx.stroke(); ctx.shadowBlur = 0;
+
+    // Right side (Occipital: Alpha/Beta - fast, low amplitude)
+    ctx.beginPath();
+    for(var x=W/2; x<=W; x+=2){
+      var y = H/2 + (Math.sin(x*0.06 - t*10)*0.4 + Math.sin(x*0.12 - t*20)*0.3 + Math.sin(x*0.25 + t*15)*0.3) * (H*0.25);
+      if(x===W/2) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    }
+    ctx.strokeStyle = indigo; ctx.lineWidth = 2;
+    ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+    ctx.shadowColor = indigo; ctx.shadowBlur = 8;
+    ctx.stroke(); ctx.shadowBlur = 0;
   }
 
   if(reduce){
