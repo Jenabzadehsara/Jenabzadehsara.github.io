@@ -160,15 +160,27 @@
   .card-kicker{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--indigo)}
   .card h3{font-family:var(--display);font-weight:600;font-size:23px;letter-spacing:-.01em;margin:12px 0 10px}
   .card p{font-size:15.5px;color:var(--text-2)}
-  .card-img{
-    width:100%;height:auto;border-radius:8px;
-    margin:16px 0;border:1px solid var(--line);
-    display:block;
-  }
   .tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px}
   .tag{
     font-family:var(--mono);font-size:11px;color:var(--muted);
     border:1px solid var(--line);border-radius:999px;padding:4px 11px;
+  }
+
+  /* Poster hover animation */
+  .hover-poster {
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    max-height: 0;
+    opacity: 0;
+    margin: 0;
+    transition: max-height 0.4s ease, opacity 0.4s ease, margin 0.4s ease;
+  }
+  
+  .card:hover .hover-poster {
+    max-height: 600px;
+    opacity: 1;
+    margin: 14px 0;
   }
 
   /* ---------- research / list rows ---------- */
@@ -301,7 +313,7 @@
         <span class="card-kicker">Machine learning</span>
         <h3>Reading sleep off an EEG</h3>
         <p>An ML pipeline for sleep-stage classification from EEG, covering feature engineering through evaluation. Presented as a poster at the California Neurotech Conference, 2026.</p>
-        <img src="Screenshot 2026-06-27 at 6.42.48 PM.jpg" alt="Research poster: Classifying Sleep Stages Using BOAS Data" class="card-img">
+        <img src="sleep-poster.jpg" alt="Research poster: Classifying Sleep Stages" class="hover-poster">
         <div class="tags"><span class="tag">ML</span><span class="tag">EEG</span><span class="tag">classification</span></div>
       </article>
 
