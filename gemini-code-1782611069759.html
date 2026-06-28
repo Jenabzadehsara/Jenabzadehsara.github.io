@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sara Jenabzadeh · Computational Neuroscience × ML</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#F2F1FA;
+    --paper:#000000;
+    --paper-2:#15131F;
+    --text-2:#C9C7DD;
+    --coral:#FF5640;
+    --indigo:#6D5BFF;
+    --citron:#C7F23E;
+    --muted:#8E8CA8;
+    --line:#2A2740;
+    --maxw:1080px;
+    --display:"Bricolage Grotesque",Georgia,serif;
+    --body:"Hanken Grotesk","Helvetica Neue",Arial,sans-serif;
+    --mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,monospace;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--body);
+    font-size:17px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
+
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--muted);
+  }
+
+  /* ---------- nav ---------- */
+  .nav{
+    position:sticky;top:0;z-index:50;
+    background:color-mix(in srgb,var(--paper) 86%,transparent);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{
+    max-width:var(--maxw);margin:0 auto;padding:14px 28px;
+    display:flex;align-items:center;justify-content:space-between;gap:20px;
+  }
+  .mark{
+    font-family:var(--display);font-weight:800;font-size:20px;
+    letter-spacing:-.02em;display:inline-flex;align-items:center;gap:9px;
+  }
+  .mark .dot{
+    width:9px;height:9px;border-radius:50%;background:var(--coral);
+    box-shadow:0 0 0 0 rgba(255,86,64,.5);
+    animation:pulse 2.4s ease-out infinite;
+  }
+  @keyframes pulse{
+    0%{box-shadow:0 0 0 0 rgba(255,86,64,.5)}
+    70%{box-shadow:0 0 0 9px rgba(255,86,64,0)}
+    100%{box-shadow:0 0 0 0 rgba(255,86,64,0)}
+  }
+  .nav-links{display:flex;gap:26px;font-family:var(--mono);font-size:13px}
+  .nav-links a{color:var(--muted);position:relative;padding:3px 0;transition:color .2s}
+  .nav-links a::after{
+    content:"";position:absolute;left:0;bottom:-2px;height:2px;width:0;
+    background:var(--coral);transition:width .25s ease;
+  }
+  .nav-links a:hover,.nav-links a.active{color:var(--ink)}
+  .nav-links a:hover::after,.nav-links a.active::after{width:100%}
+  @media(max-width:680px){.nav-links{display:none}}
+
+  /* ---------- hero ---------- */
+  .hero{padding:72px 0 40px}
+  .hero h1{
+    font-family:var(--display);
+    font-weight:800;
+    font-size:clamp(46px,11vw,118px);
+    line-height:.92;
+    letter-spacing:-.035em;
+    margin:18px 0 0;
+  }
+  .hero h1 .sweep{
+    background:linear-gradient(105deg,var(--ink) 0%,var(--ink) 55%,var(--indigo) 80%,var(--coral) 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+
+  /* recording strip: the signature element */
+  .scope{
+    position:relative;margin:26px 0 30px;
+    border:1px solid var(--line);border-radius:14px;
+    background:
+      linear-gradient(var(--paper-2),var(--paper-2)) padding-box,
+      var(--paper);
+    overflow:hidden;
+  }
+  .scope canvas{display:block;width:100%;height:150px}
+  .scope-tags{
+    position:absolute;top:10px;left:14px;right:14px;
+    display:flex;justify-content:space-between;
+    font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--muted);
+    pointer-events:none;
+  }
+  .scope-tags .ch-l{color:var(--coral)}
+  .scope-tags .ch-r{color:var(--indigo)}
+  .scope-tags .freq{color:var(--muted)}
+
+  .hero-lede{max-width:60ch;font-size:clamp(18px,2.4vw,22px);margin-top:6px}
+  .hero-quip{color:var(--muted);max-width:60ch;margin-top:14px}
+  .cta-row{display:flex;gap:14px;flex-wrap:wrap;margin-top:30px}
+  .btn{
+    font-family:var(--mono);font-size:13px;letter-spacing:.04em;
+    padding:13px 22px;border-radius:999px;border:1.5px solid var(--ink);
+    background:transparent;cursor:pointer;color:var(--ink);
+    display:inline-flex;align-items:center;gap:9px;transition:transform .18s,background .18s,color .18s;
+  }
+  .btn .arr{transition:transform .2s}
+  .btn:hover{transform:translateY(-2px)}
+  .btn:hover .arr{transform:translateX(3px)}
+  .btn-primary{background:var(--ink);color:var(--paper)}
+  .btn-primary:hover{background:var(--coral);border-color:var(--coral)}
+  .btn-ghost:hover{background:var(--ink);color:var(--paper)}
+
+  /* ---------- section scaffolding ---------- */
+  .channel{padding:64px 0;border-top:1px solid var(--line)}
+  .channel-head{display:flex;align-items:baseline;gap:16px;margin-bottom:34px;flex-wrap:wrap}
+  .channel-num{font-family:var(--mono);font-size:13px;color:var(--coral);letter-spacing:.12em}
+  .channel-title{
+    font-family:var(--display);font-weight:600;
+    font-size:clamp(28px,5vw,44px);letter-spacing:-.02em;line-height:1;
+  }
+  .channel-note{font-family:var(--mono);font-size:12px;color:var(--muted);margin-left:auto}
+  @media(max-width:680px){.channel-note{margin-left:0;width:100%}}
+
+  /* ---------- work cards ---------- */
+  .cards{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+  @media(max-width:760px){.cards{grid-template-columns:1fr}}
+  .card{
+    border:1px solid var(--line);border-radius:16px;padding:26px;
+    background:var(--paper-2);transition:transform .2s,border-color .2s,box-shadow .2s;
+    position:relative;overflow:hidden;
+  }
+  .card::before{
+    content:"";position:absolute;left:0;top:0;height:3px;width:0;
+    background:var(--coral);transition:width .3s ease;
+  }
+  .card:hover{transform:translateY(-4px);border-color:var(--indigo);box-shadow:0 18px 40px -28px rgba(85,70,232,.6)}
+  .card:hover::before{width:100%}
+  .card-kicker{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--indigo)}
+  .card h3{font-family:var(--display);font-weight:600;font-size:23px;letter-spacing:-.01em;margin:12px 0 10px}
+  .card p{font-size:15.5px;color:var(--text-2)}
+  .card-img{
+    width:100%;height:auto;border-radius:8px;
+    margin:16px 0;border:1px solid var(--line);
+    display:block;
+  }
+  .tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px}
+  .tag{
+    font-family:var(--mono);font-size:11px;color:var(--muted);
+    border:1px solid var(--line);border-radius:999px;padding:4px 11px;
+  }
+
+  /* ---------- research / list rows ---------- */
+  .rows{display:flex;flex-direction:column;gap:0}
+  .row{
+    display:grid;grid-template-columns:1fr auto;gap:18px;align-items:start;
+    padding:24px 0;border-bottom:1px solid var(--line);
+  }
+  .row:first-child{border-top:1px solid var(--line)}
+  .row h3{font-family:var(--display);font-weight:600;font-size:21px;margin-bottom:6px}
+  .row p{font-size:15.5px;color:var(--text-2);max-width:62ch}
+  .row .meta{font-family:var(--mono);font-size:12px;color:var(--muted);white-space:nowrap;text-align:right}
+  @media(max-width:680px){
+    .row{grid-template-columns:1fr}
+    .row .meta{text-align:left}
+  }
+
+  /* ---------- toolkit ---------- */
+  .kit{display:grid;grid-template-columns:repeat(2,1fr);gap:26px}
+  @media(max-width:680px){.kit{grid-template-columns:1fr}}
+  .kit-group h4{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--coral);margin-bottom:14px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{
+    font-size:14px;padding:7px 14px;border-radius:10px;
+    background:var(--paper-2);border:1px solid var(--line);
+  }
+
+  /* ---------- off-clock ---------- */
+  .offclock{display:grid;grid-template-columns:1.3fr 1fr;gap:18px}
+  @media(max-width:760px){.offclock{grid-template-columns:1fr}}
+  .feature{
+    border:1px solid var(--line);border-radius:16px;padding:28px;
+    background:linear-gradient(135deg,var(--paper-2),var(--paper));
+  }
+  .feature .card-kicker{color:var(--coral)}
+  .feature h3{font-family:var(--display);font-weight:800;font-size:28px;margin:12px 0 10px;letter-spacing:-.01em}
+  .feature p{font-size:15.5px;color:var(--text-2);max-width:48ch}
+  .side{display:flex;flex-direction:column;gap:18px}
+  .side-card{border:1px solid var(--line);border-radius:16px;padding:22px;background:var(--paper-2)}
+  .side-card h4{font-family:var(--display);font-weight:600;font-size:18px;margin-bottom:6px}
+  .side-card p{font-size:14.5px;color:var(--muted)}
+
+  /* ---------- contact ---------- */
+  .contact{padding:72px 0 40px;border-top:1px solid var(--line)}
+  .contact h2{font-family:var(--display);font-weight:800;font-size:clamp(34px,7vw,64px);letter-spacing:-.03em;line-height:1}
+  .contact p{max-width:52ch;margin-top:16px;color:var(--text-2)}
+  .contact-links{display:flex;gap:14px;flex-wrap:wrap;margin-top:30px}
+
+  /* ---------- footer ---------- */
+  footer{border-top:1px solid var(--line);padding:26px 0 40px}
+  .foot-inner{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;font-family:var(--mono);font-size:12px;color:var(--muted)}
+
+  :focus-visible{outline:2.5px solid var(--indigo);outline-offset:3px;border-radius:4px}
+
+  @media(prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    *{animation:none!important;transition:none!important}
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#top" class="mark"><span class="dot"></span>SJ</a>
+    <div class="nav-links">
+      <a href="#work">work</a>
+      <a href="#research">research</a>
+      <a href="#toolkit">toolkit</a>
+      <a href="#off">off-clock</a>
+      <a href="#contact">contact</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero wrap" id="top">
+  <span class="eyebrow">Computational Neuroscience × ML Engineering</span>
+  <h1>Sara<br><span class="sweep">Jenabzadeh</span></h1>
+
+  <div class="scope" aria-label="Decorative two-channel neural signal animation">
+    <div class="scope-tags">
+      <span class="ch-l">CH&#8209;L · whisker</span>
+      <span class="freq" id="freq-readout">≈ 6.40 Hz</span>
+      <span class="ch-r">CH&#8209;R · whisker</span>
+    </div>
+    <canvas id="scope"></canvas>
+  </div>
+
+  <p class="hero-lede">I build software and hardware that read neural signals: spiking-network models, real-time decoders, and the lab electronics in between.</p>
+  <p class="hero-quip">Currently teaching circuits to keep a beat: the brain kind, modeled in MATLAB, and the breadboard kind, oscillating at 6.4 Hz on an actual servo.</p>
+
+  <div class="cta-row">
+    <a href="#work" class="btn btn-primary">See the work <span class="arr">→</span></a>
+    <span class="btn" style="border-color: transparent; pointer-events: none; color: var(--muted); padding-left: 0;">(Email for résumé)</span>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="channel" id="work">
+    <div class="channel-head">
+      <span class="channel-num">CH 01</span>
+      <h2 class="channel-title">Selected work</h2>
+      <span class="channel-note">models · real-time systems · hardware</span>
+    </div>
+    <div class="cards">
+
+      <article class="card">
+        <span class="card-kicker">Computational modeling</span>
+        <h3>Spiking the network</h3>
+        <p>Built and tuned integrate-and-fire models of central pattern generators in MATLAB, then ran a 6×6 parameter sweep over inhibitory weights for a robustness analysis feeding into a Moore Lab publication (Lu et&nbsp;al., in prep).</p>
+        <div class="tags"><span class="tag">MATLAB</span><span class="tag">dynamical systems</span><span class="tag">I&F models</span></div>
+      </article>
+
+      <article class="card">
+        <span class="card-kicker">Real-time systems</span>
+        <h3>Two whiskers, no delay</h3>
+        <p>A real-time bilateral whisker tracker reading a FLIR camera with a NI&nbsp;USB-6003 DAQ in the loop, built for closed-loop experiments where latency actually matters.</p>
+        <div class="tags"><span class="tag">Python</span><span class="tag">real-time</span><span class="tag">FLIR</span><span class="tag">NI-DAQ</span></div>
+      </article>
+
+      <article class="card">
+        <span class="card-kicker">Model → motor</span>
+        <h3>Made a robot keep rhythm</h3>
+        <p>Drove a servo rig to physically replicate a 6.4&nbsp;Hz CPG oscillation, taking the model off the screen and validating the dynamics in hardware.</p>
+        <div class="tags"><span class="tag">embedded</span><span class="tag">control</span><span class="tag">hardware</span></div>
+      </article>
+
+      <article class="card">
+        <span class="card-kicker">Machine learning</span>
+        <h3>Reading sleep off an EEG</h3>
+        <p>An ML pipeline for sleep-stage classification from EEG, covering feature engineering through evaluation. Presented as a poster at the California Neurotech Conference, 2026.</p>
+        <img src="Screenshot 2026-06-27 at 6.42.48 PM.jpg" alt="Research poster: Classifying Sleep Stages Using BOAS Data" class="card-img">
+        <div class="tags"><span class="tag">ML</span><span class="tag">EEG</span><span class="tag">classification</span></div>
+      </article>
+
+    </div>
+  </section>
+
+  <section class="channel" id="research">
+    <div class="channel-head">
+      <span class="channel-num">CH 02</span>
+      <h2 class="channel-title">Research &amp; leadership</h2>
+      <span class="channel-note">where most of this lives</span>
+    </div>
+    <div class="rows">
+      <div class="row">
+        <div>
+          <h3>Moore Lab, Undergraduate Researcher</h3>
+          <p>Working on central-pattern-generator dynamics and integrate-and-fire modeling under PI Jeffrey Moore, contributing analysis toward an in-progress publication on rhythmic neural circuits.</p>
+        </div>
+        <div class="meta">USC<br>2025 to present</div>
+      </div>
+      <div class="row">
+        <div>
+          <h3>Neurotech@USC</h3>
+          <p>Helping build a visible student pipeline into neurotech: projects, talks, and a growing community for people who want to work where neuroscience meets engineering.</p>
+        </div>
+        <div class="meta">USC<br>student org</div>
+      </div>
+      <div class="row">
+        <div>
+          <h3>BS Computational Neuroscience + MS Electrical Engineering</h3>
+          <p>Concurrent degrees through USC Viterbi's Progressive Degree Program, with a graduate focus on machine learning.</p>
+        </div>
+        <div class="meta">USC Viterbi<br>PDP</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="channel" id="toolkit">
+    <div class="channel-head">
+      <span class="channel-num">CH 03</span>
+      <h2 class="channel-title">Toolkit</h2>
+      <span class="channel-note">edit me to taste</span>
+    </div>
+    <div class="kit">
+      <div class="kit-group">
+        <h4>Modeling &amp; ML</h4>
+        <div class="chips">
+          <span class="chip">Python</span><span class="chip">MATLAB</span>
+          <span class="chip">NumPy</span><span class="chip">scikit-learn</span>
+          <span class="chip">PyTorch</span>
+        </div>
+      </div>
+      <div class="kit-group">
+        <h4>Signals &amp; data</h4>
+        <div class="chips">
+          <span class="chip">signal processing</span><span class="chip">EEG / spike trains</span>
+          <span class="chip">Pandas</span><span class="chip">Matplotlib</span>
+        </div>
+      </div>
+      <div class="kit-group">
+        <h4>Hardware &amp; lab</h4>
+        <div class="chips">
+          <span class="chip">NI-DAQ</span><span class="chip">FLIR cameras</span>
+          <span class="chip">servos / control</span><span class="chip">TinyCAD</span>
+        </div>
+      </div>
+      <div class="kit-group">
+        <h4>Build &amp; automate</h4>
+        <div class="chips">
+          <span class="chip">Git</span><span class="chip">REST APIs</span>
+          <span class="chip">n8n / Make</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="channel" id="off">
+    <div class="channel-head">
+      <span class="channel-num">CH 04</span>
+      <h2 class="channel-title">Off-clock</h2>
+      <span class="channel-note">the part that says how I think</span>
+    </div>
+    <div class="offclock">
+      <article class="feature">
+        <span class="card-kicker">Founder · art direction · systems</span>
+        <h3>Atel Arles</h3>
+        <p>A fashion editorial brand I run end to end, built on a content pipeline I designed myself: generation, captioning through an API, and automated scheduling. Equal parts art direction and engineering, which is exactly the overlap I like working in.</p>
+        <div class="tags"><span class="tag">API pipelines</span><span class="tag">automation</span><span class="tag">brand</span></div>
+      </article>
+      <div class="side">
+        <div class="side-card">
+          <h4>Charcoal portraiture</h4>
+          <p>Realism work in charcoal. The long-attention, high-precision kind of practice.</p>
+        </div>
+        <div class="side-card">
+          <h4>Filmmaking</h4>
+          <p>Shooting and cutting short pieces. Composition is composition, on a screen or on paper.</p>
+        </div>
+        <div class="side-card">
+          <h4>CrossFit</h4>
+          <p>Strength and conditioning, logged and progressively loaded. I like things you can measure and push.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<section class="contact wrap" id="contact">
+  <span class="eyebrow">Let's talk</span>
+  <h2>Open to internships<br>&amp; collaborations.</h2>
+  <p>Especially in machine learning, software, and anything close to neural signals. Click my email to copy it, or use the links below.</p>
+  <div class="contact-links">
+    <button type="button" class="btn btn-primary" id="copy-email" data-email="sajenabzad@gmail.com">
+      <span id="copy-label">sajenabzad@gmail.com</span> <span class="arr">⧉</span>
+    </button>
+    <a href="#" class="btn btn-ghost" data-placeholder="linkedin">LinkedIn <span class="arr">↗</span></a>
+    <a href="#" class="btn btn-ghost" data-placeholder="github">GitHub <span class="arr">↗</span></a>
+  </div>
+  <p style="margin-top:14px"><a href="mailto:sajenabzad@gmail.com" style="font-family:var(--mono);font-size:13px;color:var(--muted);border-bottom:1px solid var(--line)">or open your mail app →</a></p>
+</section>
+
+<footer>
+  <div class="wrap foot-inner">
+    <span>© 2026 Sara Jenabzadeh</span>
+    <span>Fully vibe-coded with Claude.</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var canvas=document.getElementById('scope');
+  if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  var reduce=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  var W=0,H=0,dpr=Math.min(window.devicePixelRatio||1,2);
+
+  function css(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim();}
+  var coral=css('--coral')||'#FF5640';
+  var indigo=css('--indigo')||'#5546E8';
+  var line=css('--line')||'#D6D3EC';
+
+  function resize(){
+    var r=canvas.getBoundingClientRect();
+    W=r.width;H=r.height;
+    canvas.width=W*dpr;canvas.height=H*dpr;
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+  }
+  resize();
+  window.addEventListener('resize',resize);
+
+  // a CPG-ish compound oscillation: a few sines + gentle noise
+  function sample(x,t,phase){
+    var f=6.4;                       // the headline frequency
+    var v =Math.sin((x*0.018)+(t*f*0.04)+phase)*0.55;
+    v+=Math.sin((x*0.041)+(t*f*0.07)+phase*1.7)*0.22;
+    v+=Math.sin((x*0.0072)-(t*0.9)+phase)*0.12;
+    v+=(Math.sin(x*0.6+t*7)*0.04);   // fine texture
+    return v;
+  }
+
+  function grid(){
+    ctx.strokeStyle=line;ctx.globalAlpha=0.55;ctx.lineWidth=1;
+    for(var gx=0;gx<W;gx+=46){
+      ctx.beginPath();ctx.moveTo(gx,0);ctx.lineTo(gx,H);ctx.stroke();
+    }
+    ctx.beginPath();ctx.moveTo(0,H/2);ctx.lineTo(W,H/2);ctx.stroke();
+    ctx.globalAlpha=1;
+  }
+
+  function trace(t,phase,color,amp){
+    ctx.beginPath();
+    for(var x=0;x<=W;x+=2){
+      var y=H/2 + sample(x,t,phase)*amp;
+      if(x===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+    }
+    ctx.strokeStyle=color;ctx.lineWidth=2;
+    ctx.lineJoin='round';ctx.lineCap='round';
+    ctx.shadowColor=color;ctx.shadowBlur=8;
+    ctx.stroke();
+    ctx.shadowBlur=0;
+  }
+
+  function frame(t){
+    ctx.clearRect(0,0,W,H);
+    grid();
+    trace(t,0,coral,H*0.30);
+    trace(t,Math.PI*0.6,indigo,H*0.22);
+  }
+
+  if(reduce){
+    frame(40);                       // one static, settled frame
+  }else{
+    var start=null;
+    function loop(ts){
+      if(start===null)start=ts;
+      frame((ts-start)/1000);
+      requestAnimationFrame(loop);
+    }
+    requestAnimationFrame(loop);
+  }
+})();
+
+// nav active-section highlight
+(function(){
+  var links=[].slice.call(document.querySelectorAll('.nav-links a'));
+  var map={};
+  links.forEach(function(a){
+    var id=a.getAttribute('href').replace('#','');
+    var sec=document.getElementById(id);
+    if(sec)map[id]=a;
+  });
+  if(!('IntersectionObserver' in window))return;
+  var obs=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        links.forEach(function(l){l.classList.remove('active');});
+        var a=map[e.target.id];if(a)a.classList.add('active');
+      }
+    });
+  },{rootMargin:'-45% 0px -50% 0px'});
+  Object.keys(map).forEach(function(id){obs.observe(document.getElementById(id));});
+})();
+
+// click-to-copy email
+(function(){
+  var btn=document.getElementById('copy-email');
+  var label=document.getElementById('copy-label');
+  if(!btn||!label)return;
+  var email=btn.getAttribute('data-email');
+  var original=label.textContent;
+  var timer=null;
+  function flash(msg){
+    label.textContent=msg;
+    clearTimeout(timer);
+    timer=setTimeout(function(){label.textContent=original;},1800);
+  }
+  function copy(){
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(email).then(function(){flash('Copied ✓');},fallback);
+    }else{fallback();}
+  }
+  function fallback(){
+    try{
+      var t=document.createElement('textarea');
+      t.value=email;t.style.position='fixed';t.style.opacity='0';
+      document.body.appendChild(t);t.select();
+      document.execCommand('copy');document.body.removeChild(t);
+      flash('Copied ✓');
+    }catch(e){flash(email);}
+  }
+  btn.addEventListener('click',copy);
+})();
+</script>
+</body>
+</html>
