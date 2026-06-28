@@ -188,6 +188,7 @@
   .row{
     display:grid;grid-template-columns:1fr auto;gap:18px;align-items:start;
     padding:24px 0;border-bottom:1px solid var(--line);
+    transition: background-color 0.3s ease;
   }
   .row:first-child{border-top:1px solid var(--line)}
   .row h3{font-family:var(--display);font-weight:600;font-size:21px;margin-bottom:6px}
@@ -196,6 +197,32 @@
   @media(max-width:680px){
     .row{grid-template-columns:1fr}
     .row .meta{text-align:left}
+  }
+  
+  /* Text details hover animation */
+  .hover-details {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    margin: 0;
+    transition: max-height 0.4s ease, opacity 0.4s ease, margin 0.4s ease;
+  }
+  .row:hover .hover-details {
+    max-height: 500px;
+    opacity: 1;
+    margin-top: 14px;
+  }
+  .hover-details ul {
+    padding-left: 18px;
+    font-size: 14.5px;
+    color: var(--text-2);
+    max-width: 65ch;
+  }
+  .hover-details li {
+    margin-bottom: 8px;
+  }
+  .hover-details li strong {
+    color: var(--ink);
   }
 
   /* ---------- toolkit ---------- */
@@ -331,6 +358,13 @@
         <div>
           <h3><a href="https://www.moorelaboratory.org/team" target="_blank" rel="noopener noreferrer" style="text-decoration: underline; text-decoration-color: var(--muted); text-underline-offset: 4px;">Moore Lab</a>, Undergraduate Researcher</h3>
           <p>Working on central-pattern-generator dynamics and integrate-and-fire modeling under PI Jeffrey Moore, contributing analysis toward an in-progress publication on rhythmic neural circuits.</p>
+          <div class="hover-details">
+            <ul>
+              <li><strong>Computational Modeling:</strong> Building bilateral whisking circuit models in mice using integrate-and-fire frameworks in MATLAB, running parameter sweeps over neurophysiological variables.</li>
+              <li><strong>Signal Processing:</strong> Applying ISI distributions, autocorrelation, PSTH, and spike-triggered averages to neural recordings.</li>
+              <li><strong>Hardware &amp; Circuitry:</strong> Designed and assembled custom camera time-sync circuits and airflow sensor drivers; formalized schematics using TinyCAD.</li>
+            </ul>
+          </div>
         </div>
         <div class="meta">USC<br>2025 to present</div>
       </div>
