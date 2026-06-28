@@ -252,6 +252,35 @@
 
   /* ---------- contact ---------- */
   .contact{padding:72px 0 40px;border-top:1px solid var(--line)}
+  .contact-layout {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+  .contact-text {
+    flex: 1 1 500px;
+  }
+  .contact-photo {
+    flex: 0 0 auto;
+  }
+  .profile-pic {
+    width: 220px;
+    height: 220px;
+    border-radius: 16px;
+    object-fit: cover;
+    border: 1px solid var(--line);
+    background: var(--paper-2);
+    box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  .profile-pic:hover {
+    transform: translateY(-4px);
+    border-color: var(--tech);
+    box-shadow: 0 18px 40px -28px rgba(0, 191, 166, 0.4);
+  }
+  
   .contact h2{font-family:var(--display);font-weight:800;font-size:clamp(34px,7vw,64px);letter-spacing:-.03em;line-height:1}
   .contact p{max-width:52ch;margin-top:16px;color:var(--text-2)}
   .contact-links{display:flex;gap:14px;flex-wrap:wrap;margin-top:30px}
@@ -456,17 +485,24 @@
 </main>
 
 <section class="contact wrap" id="contact">
-  <span class="eyebrow">Let's talk</span>
-  <h2>Open to internships<br>&amp; collaborations.</h2>
-  <p>Especially in machine learning, software, and anything close to neural signals. Click my email to copy it, or use the links below.</p>
-  <div class="contact-links">
-    <button type="button" class="btn btn-primary" id="copy-email" data-email="sajenabzad@gmail.com">
-      <span id="copy-label">sajenabzad@gmail.com</span> <span class="arr">⧉</span>
-    </button>
-    <a href="#" class="btn btn-ghost" data-placeholder="linkedin">LinkedIn <span class="arr">↗</span></a>
-    <a href="#" class="btn btn-ghost" data-placeholder="github">GitHub <span class="arr">↗</span></a>
+  <div class="contact-layout">
+    <div class="contact-text">
+      <span class="eyebrow">Let's talk</span>
+      <h2>Open to internships<br>&amp; collaborations.</h2>
+      <p>Especially in machine learning, software, and anything close to neural signals. Click my email to copy it, or use the links below.</p>
+      <div class="contact-links">
+        <button type="button" class="btn btn-primary" id="copy-email" data-email="sajenabzad@gmail.com">
+          <span id="copy-label">sajenabzad@gmail.com</span> <span class="arr">⧉</span>
+        </button>
+        <a href="#" class="btn btn-ghost" data-placeholder="linkedin">LinkedIn <span class="arr">↗</span></a>
+        <a href="#" class="btn btn-ghost" data-placeholder="github">GitHub <span class="arr">↗</span></a>
+      </div>
+      <p style="margin-top:14px"><a href="mailto:sajenabzad@gmail.com" style="font-family:var(--mono);font-size:13px;color:var(--muted);border-bottom:1px solid var(--line)">or open your mail app →</a></p>
+    </div>
+    <div class="contact-photo">
+      <img src="profile.jpg" alt="Sara Jenabzadeh" class="profile-pic">
+    </div>
   </div>
-  <p style="margin-top:14px"><a href="mailto:sajenabzad@gmail.com" style="font-family:var(--mono);font-size:13px;color:var(--muted);border-bottom:1px solid var(--line)">or open your mail app →</a></p>
 </section>
 
 <footer>
