@@ -163,16 +163,11 @@
   .cards{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
   @media(max-width:760px){.cards{grid-template-columns:1fr}}
   .card{
-    border:1px solid var(--line);border-radius:16px;padding:26px;
+    border:1px solid var(--line);border-radius:0;padding:26px;
     background:var(--paper-2);transition:transform .2s,border-color .2s,box-shadow .2s;
     position:relative;overflow:hidden;
   }
-  .card::before{
-    content:"";position:absolute;left:0;top:0;height:3px;width:0;
-    background:var(--tech);transition:width .3s ease;
-  }
-  .card:hover{transform:translateY(-4px);border-color:var(--tech);box-shadow:0 18px 40px -28px rgba(0,191,166,.3)}
-  .card:hover::before{width:100%}
+  .card:hover{transform:translateY(-4px);border-color:var(--muted);box-shadow:0 18px 40px -28px rgba(0,0,0,.5)}
   .card-kicker{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
   .card h3{font-family:var(--display);font-weight:600;font-size:23px;letter-spacing:-.01em;margin:12px 0 10px}
   .card p{font-size:15.5px;color:var(--text-2)}
@@ -185,7 +180,7 @@
   /* Poster hover animation */
   .hover-poster {
     width: 100%;
-    border-radius: 8px;
+    border-radius: 0;
     border: 1px solid var(--line);
     max-height: 0;
     opacity: 0;
